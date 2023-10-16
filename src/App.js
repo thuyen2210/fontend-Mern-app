@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { BrowserRouter ,Route, Routes} from "react-router-dom";
+import Langing from './components/layout/Langing';
+import Auth from './views/Auth';
+import AuthContextProvider from './contexts/AuthContex';
+import Dashboard from './views/Dashboard';
+import ProtectedRoute from './components/routing/ProtectedRoute';
+import About from './views/About';
+import PostContextProvider from './contexts/PostContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContextProvider>
+      <PostContextProvider>
+        <BrowserRouter>   
+          <Routes>
+            <Route path="/" element={<Langing />} />
+            <Route path="/login" element={ <Auth  authRoute='login'/>} />
+            <Route path="/register" element={  <Auth authRoute='register'/>} />
+            <Route path="/dashboard" element={
+                <ProtectedRoute element={<Dashboard />}/>
+              }
+              />
+              <Route path="/about" element={
+                <ProtectedRoute element={<About />}/>
+              }
+              />
+            <Route path="/dashboard" element={<Dashboard />} />
+
+          </Routes>
+        </BrowserRouter>
+      </PostContextProvider>
+    </AuthContextProvider>
   );
 }
 
